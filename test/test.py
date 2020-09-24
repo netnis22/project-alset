@@ -16,5 +16,4 @@ elif k==ord('s'):
     cv2.imwrite('lena_copy.png',img)
     cv2.destroyWindow('image')
 
-    cv2.destroyAllWindows()
-
+cv2.destroyAllWindows()

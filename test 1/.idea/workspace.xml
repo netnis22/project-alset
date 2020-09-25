@@ -25,8 +25,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+<<<<<<< Updated upstream
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../test 2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+=======
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+>>>>>>> Stashed changes
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -150,9 +154,9 @@
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state width="1899" height="363" key="GridCell.Tab.1.right/0.0.1920.1080/1920.312.1366.768@0.0.1920.1080" timestamp="1600989401908" />
-    <state x="461" y="187" width="998" height="708" key="SettingsEditor" timestamp="1600975735917">
+    <state x="618" y="328" width="998" height="708" key="SettingsEditor" timestamp="1601027992298">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="461" y="187" width="998" height="708" key="SettingsEditor/0.0.1920.1080/1920.312.1366.768@0.0.1920.1080" timestamp="1600975735917" />
+    <state x="618" y="328" width="998" height="708" key="SettingsEditor/0.0.1920.1080/1920.312.1366.768@0.0.1920.1080" timestamp="1601027992298" />
   </component>
 </project>

@@ -17,6 +17,7 @@ out = cv2.VideoWriter('output.avi', fourcc, 30.0, (640, 480))
 # print indromaisah about the camara
 infrocam(cap)
 
+
 while cap.isOpened():
     ret, frame = cap.read()
 

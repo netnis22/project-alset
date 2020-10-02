@@ -1,4 +1,5 @@
 import cv2
+import datetime
 
 
 # this def print indromaisah about the camara
@@ -13,24 +14,25 @@ def infrocam(cap):
 cap = cv2.VideoCapture(0)
 fourcc = cv2.VideoWriter_fourcc(*'XVID')
 out = cv2.VideoWriter('output.avi', fourcc, 30.0, (640, 480))
+font = cv2.FONT_HERSHEY_COMPLEX_SMALL
 
-cap.set(3, 1200)
-cap.set(4, 1600)
 
 
 # print indromaisah about the camara
 infrocam(cap)
 
-
 while cap.isOpened():
     ret, frame = cap.read()
 
     if ret:
-
         out.write(frame)
 
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        cv2.imshow('frame', gray)
+        datet = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        text = 'width: ' + str(cap.get(3)) + ' Height: ' + str(cap.get(4)) + ' Frame: ' + str(cap.get(5))
+
+        frame = cv2.putText(frame, datet, (0, 20), font, 0.7, (0, 0, 255), 1, cv2.LINE_AA)
+        frame = cv2.putText(frame, text, (0, 40), font, 0.7, (0, 0, 255), 1, cv2.LINE_AA)
+        cv2.imshow('frame', frame)
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

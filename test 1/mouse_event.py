@@ -44,7 +44,7 @@ def click_event2(event, x, y, flags, param):
 
 
 # img = np.zeros((512, 512, 3), np.uint8)
-img = cv2.imread('road.jpg', 1)
+img = cv2.imread('road2.jpg', 1)
 cv2.imshow('image', img)
 points = []
 

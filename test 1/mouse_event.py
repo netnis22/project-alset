@@ -12,7 +12,7 @@ def click_event1(event, x, y, flags, param):
     if event == cv2.EVENT_LBUTTONDOWN:
         print(x, ' ', y, )
         strXY = str(x) + ', ' + str(y)
-        cv2.putText(img, strXY, (x, y), font, 0.5, (255, 255, 255), 2)
+        cv2.putText(img, strXY, (x, y), font, 0.5, (0, 0, 255), 2)
         cv2.imshow('image', img)
     if event == cv2.EVENT_RBUTTONDOWN:
         blue = img[y, x, 0]
@@ -20,7 +20,7 @@ def click_event1(event, x, y, flags, param):
         red = img[y, x, 2]
         print(blue, ' ', green, ' ', red)
         strBGR = str(blue) + ', ' + str(green) + ', ' + str(red)
-        cv2.putText(img, strBGR, (x, y), font, 0.5, (255, 255, 255), 2)
+        cv2.putText(img, strBGR, (x, y), font, 0.5, (0, 0, 255), 2)
         cv2.imshow('image', img)
 
 
@@ -44,7 +44,7 @@ def click_event2(event, x, y, flags, param):
 
 
 # img = np.zeros((512, 512, 3), np.uint8)
-img = cv2.imread('lena.jpg', 1)
+img = cv2.imread('road.jpg', 1)
 cv2.imshow('image', img)
 points = []
 

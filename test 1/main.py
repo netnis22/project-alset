@@ -1,11 +1,19 @@
 import cv2
+import matplotlib
+import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     print(cv2.__version__)
+    img =cv2.imread('road.jpg', 1)
+    cv2.imshow('img', img)
 
-    img = cv2.imread('road.jpg', 0)
-    cv2.imshow('image', img)
-    print(img)
+
+    b, g, r = cv2.split(cv2.imread('road.jpg', 1))  # get b,g,r
+    img = cv2.merge([r, g, b])  # switch it to rgb
+
+    plt.imshow(img)
+    plt.title('image')
+    plt.show()
 
     k = cv2.waitKey(0)
 

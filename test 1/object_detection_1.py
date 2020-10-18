@@ -5,8 +5,10 @@ import numpy as np
 def nothinf(x):
     pass
 
+cap =cv2.VideoCapture(0)
 
 cv2.namedWindow("Tracking")
+
 
 cv2.createTrackbar("LH", "Tracking", 0, 255, nothinf)
 cv2.createTrackbar("LS", "Tracking", 0, 255, nothinf)
@@ -17,7 +19,8 @@ cv2.createTrackbar("UV", "Tracking", 255, 255, nothinf)
 
 while True:
     #frame = cv2.imread('smarties.png')
-    frame = cv2.imread('Road2.jpg')
+    #frame = cv2.imread('Road2.jpg')
+    _, frame = cap.read()
 
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
@@ -43,5 +46,5 @@ while True:
     key = cv2.waitKey(1)
     if key == 27:
         break
-
+cap.release()
 cv2.destroyAllWindows()

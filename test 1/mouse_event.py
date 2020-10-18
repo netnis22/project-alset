@@ -6,6 +6,10 @@ events = [i for i in dir(cv2) if 'EVENT' in i]
 print(events)
 
 
+def nothing(x):
+    print(x)
+
+
 def click_event1(event, x, y, flags, param):
     font = cv2.FONT_HERSHEY_COMPLEX_SMALL
 

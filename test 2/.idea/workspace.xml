@@ -50,7 +50,7 @@
       <recent name="C:\Users\Owner\Documents\GitHub\project\project\test 2" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main2">
+  <component name="RunManager" selected="Python.main13">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="test 2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -64,6 +64,90 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main11" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="test 2" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main11.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main12" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="test 2" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main12.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main12.2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="test 2" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main12.2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main13" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="test 2" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main13.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -93,6 +177,27 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="main8" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="test 2" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main8.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="tutorial_video" type="tests" factoryName="Unittests">
       <module name="test 2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -112,7 +217,21 @@
       <item itemvalue="Python.main" />
       <item itemvalue="Python.main2" />
       <item itemvalue="Python tests.tutorial_video" />
+      <item itemvalue="Python.main8" />
+      <item itemvalue="Python.main11" />
+      <item itemvalue="Python.main12" />
+      <item itemvalue="Python.main12.2" />
+      <item itemvalue="Python.main13" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main13" />
+        <item itemvalue="Python.main12.2" />
+        <item itemvalue="Python.main12" />
+        <item itemvalue="Python.main11" />
+        <item itemvalue="Python.main8" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -138,15 +257,31 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
+<<<<<<< Updated upstream
     <state x="0" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1601028530314">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
     <state x="0" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1600969462069" />
     <state x="0" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080/1920.312.1366.768@0.0.1920.1080" timestamp="1601028530314" />
+=======
+    <state x="0" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1601132351724">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="0" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1601132351724" />
+    <state x="86" y="145" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1603013058192">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="86" y="145" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680@0.0.1280.680" timestamp="1603013058192" />
+    <state x="50" y="90" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1603012616659">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="50" y="90" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1280.680@0.0.1280.680" timestamp="1603012616659" />
+>>>>>>> Stashed changes
     <state x="95" y="95" key="FileChooserDialogImpl" timestamp="1601027053596">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="95" y="95" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1601027053596" />
+<<<<<<< Updated upstream
     <state width="938" height="288" key="GridCell.Tab.0.bottom" timestamp="1601028712726">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
@@ -167,5 +302,43 @@
     </state>
     <state width="592" height="160" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1601027411120" />
     <state width="938" height="288" key="GridCell.Tab.0.right/0.0.1920.1080/1920.312.1366.768@0.0.1920.1080" timestamp="1601028712726" />
+=======
+    <state width="631" height="116" key="GridCell.Tab.0.bottom" timestamp="1603625101222">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="631" height="116" key="GridCell.Tab.0.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603625101222" />
+    <state width="631" height="116" key="GridCell.Tab.0.center" timestamp="1603625101221">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="631" height="116" key="GridCell.Tab.0.center/0.0.1280.680@0.0.1280.680" timestamp="1603625101221" />
+    <state width="631" height="116" key="GridCell.Tab.0.left" timestamp="1603625101221">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="631" height="116" key="GridCell.Tab.0.left/0.0.1280.680@0.0.1280.680" timestamp="1603625101221" />
+    <state width="631" height="116" key="GridCell.Tab.0.right" timestamp="1603625101222">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="631" height="116" key="GridCell.Tab.0.right/0.0.1280.680@0.0.1280.680" timestamp="1603625101222" />
+    <state width="631" height="203" key="GridCell.Tab.1.bottom" timestamp="1603620816713">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="631" height="203" key="GridCell.Tab.1.bottom/0.0.1280.680@0.0.1280.680" timestamp="1603620816713" />
+    <state width="631" height="203" key="GridCell.Tab.1.center" timestamp="1603620816713">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="631" height="203" key="GridCell.Tab.1.center/0.0.1280.680@0.0.1280.680" timestamp="1603620816713" />
+    <state width="631" height="203" key="GridCell.Tab.1.left" timestamp="1603620816712">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="631" height="203" key="GridCell.Tab.1.left/0.0.1280.680@0.0.1280.680" timestamp="1603620816712" />
+    <state width="631" height="203" key="GridCell.Tab.1.right" timestamp="1603620816713">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state width="631" height="203" key="GridCell.Tab.1.right/0.0.1280.680@0.0.1280.680" timestamp="1603620816713" />
+    <state x="0" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1601163953865">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="0" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680@0.0.1280.680" timestamp="1601163953865" />
+>>>>>>> Stashed changes
   </component>
 </project>

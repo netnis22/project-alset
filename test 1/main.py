@@ -4,12 +4,12 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     print(cv2.__version__)
-    img =cv2.imread('road.jpg', 1)
+    img = cv2.imread('road.jpg', 1)
     cv2.imshow('img', img)
 
-
-    b, g, r = cv2.split(cv2.imread('road.jpg', 1))  # get b,g,r
-    img = cv2.merge([r, g, b])  # switch it to rgb
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    #b, g, r = cv2.split(cv2.imread('road.jpg', 1))  # get b,g,r
+    #img = cv2.merge([r, g, b])  # switch it to rgb
 
     plt.imshow(img)
     plt.title('image')

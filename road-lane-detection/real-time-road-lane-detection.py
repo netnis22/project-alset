@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import datetime
 
 
+# Prints camera information
 def infrocamPrint(cap):
     print('infro from camara:')
     print('the HEIGHT ', cap.get(cv.CAP_PROP_FRAME_HEIGHT))
@@ -12,6 +13,7 @@ def infrocamPrint(cap):
     print("fps ", cap.get(cv.CAP_PROP_FPS))
 
 
+# Place the information on the camera screen
 def infrocam(frame, cap):
     font = cv.FONT_HERSHEY_COMPLEX_SMALL
     datet = str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
@@ -20,6 +22,7 @@ def infrocam(frame, cap):
     frame = cv.putText(frame, text, (0, 40), font, 0.7, (0, 0, 255), 1, cv.LINE_AA)
 
 
+# make the mask image
 def makemask(frame):
     l_h = 98
     l_s = 58
@@ -41,7 +44,8 @@ def makemask(frame):
     return mask
 
 
-def showimages(frame, mask, edges, res):
+# show the images on the screen
+def showImages(frame, mask, edges, res):
     cv.imshow("video", frame)
     cv.imshow("mask", mask)
     cv.imshow('Edges', edges)
@@ -55,13 +59,12 @@ def main():
     while True:
         _, frame = cap.read()
 
-        infrocam(frame, cap)
-
-        mask = makemask(frame)
-        edges = cv.Canny(mask, 0, 400)
+        infrocam(frame, cap)  # Activates the function infrocam
+        mask = makemask(frame)  # Activates the function makemask
+        edges = cv.Canny(mask, 0, 400)  # Prepares an image only at the edges of the mask
         res = cv.bitwise_and(frame, frame)
 
-        showimages(frame, mask, edges, res)
+        showImages(frame, mask, edges, res)
 
         key = cv.waitKey(1)
         if key == 27:

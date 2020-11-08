@@ -90,8 +90,8 @@ def breakLoop():
 
 def region_of_interest(edges):
     height = edges.shape[0]
-    polygons1 = np.array([[(180, height), (640, height), (180, 250)]])
-    polygons2 = np.array([[(180, 250), (640, height), (640, 250)]])
+    polygons1 = np.array([[(0, height), (640, height), (0, 250)]])
+    polygons2 = np.array([[(0, 250), (640, height), (640, 250)]])
 
     mask = np.zeros_like(edges)
     cv.fillPoly(mask, polygons1, 255)
@@ -141,7 +141,7 @@ def average_slope_intercept(image, lines):
         right_line = create_coordinates(image, right_fit_average)
     else:
         right = False
-    if(right & left):
+    if (right & left):
         print('ok')
     elif (right & (left == False)):
         print('left')

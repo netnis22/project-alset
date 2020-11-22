@@ -50,13 +50,13 @@ def infroCam(frame, cap):
 
 # make the mask image
 def makeMask(frame):
-    l_h = 98
-    l_s = 58
-    l_v = 67
+    l_h = 81
+    l_s = 22
+    l_v = 89
 
-    u_h = 107
-    u_s = 145
-    u_v = 152
+    u_h = 117
+    u_s = 104
+    u_v = 128
 
     l_b = np.array([l_h, l_s, l_v])
     u_b = np.array([u_h, u_s, u_v])
@@ -71,12 +71,13 @@ def makeMask(frame):
 
 
 # show the images on the screen
-def showImages(frame, mask, edges, roi, res):
+def showImages(frame, mask, edges, roi, res, line_image):
     cv.imshow("video", frame)
     cv.imshow("mask", mask)
     cv.imshow('Edges', edges)
     cv.imshow("roi", roi)
     cv.imshow("res", res)
+    # cv.imshow("line_image", line_image)
 
 
 # Checks if esc is pressed and if esc is pressed returns False otherwise returns True
@@ -90,12 +91,13 @@ def breakLoop():
 
 def region_of_interest(edges):
     height = edges.shape[0]
-    polygons1 = np.array([[(0, height), (640, height), (0, 250)]])
-    polygons2 = np.array([[(0, 250), (640, height), (640, 250)]])
+    polygons1 = np.array([[(0, height), (640, height), (320, 240)]])
+    # polygons1 = np.array([[(0, height), (640, height), (0, 250)]])
+    # polygons2 = np.array([[(0, 250), (640, height), (640, 250)]])
 
     mask = np.zeros_like(edges)
     cv.fillPoly(mask, polygons1, 255)
-    cv.fillPoly(mask, polygons2, 255)
+    # cv.fillPoly(mask, polygons2, 255)
 
     masked_image = cv.bitwise_and(edges, mask)
     return masked_image
@@ -110,8 +112,22 @@ def create_coordinates(image, line_parameters):
     return np.array([x1, y1, x2, y2])
 
 
+def midelOFaLine(lines_coordinates):
+    xMID = (lines_coordinates[0] + lines_coordinates[2]) / 2
+    yMID = (lines_coordinates[1] + lines_coordinates[3]) / 2
+    return np.array([xMID, yMID])
+
+
+def midelOFrode(lineL, lineR):
+    lineMidL = midelOFaLine(lineL)
+    lineMidR = midelOFaLine(lineR)
+    midX = (lineL[0] + lineR[0]) / 2
+    midY = (lineL[1] + lineR[1]) / 2
+    return np.array([midX, midY])
+
+
 def average_slope_intercept(image, lines):
-    left =False
+    left = False
     right = False
     left_fit = []
     right_fit = []
@@ -127,28 +143,33 @@ def average_slope_intercept(image, lines):
                 right_fit.append((slope, intercept))
     if left_fit:
         left_fit_average = np.average(left_fit, axis=0)
-        #print(left_fit_average, 'left')
-        #print('left')
+        # print(left_fit_average, 'left')
         left = True
         left_line = create_coordinates(image, left_fit_average)
+        # print(left_line, "left_line")
     else:
         left = False
     if right_fit:
         right_fit_average = np.average(right_fit, axis=0)
-        #print(right_fit_average, 'right')
-        #print('right')
+        # print(right_fit_average, 'right')
         right = True
         right_line = create_coordinates(image, right_fit_average)
+        # print(right_line, "right_line")
     else:
         right = False
-    if (right & left):
-        print('ok')
-    elif (right & (left == False)):
+    #if right and left:
+        #print('ok')
+    if left and right and (300 < midelOFrode(left_line, right_line)[0] < 340):
+        print("mid")
+    elif left is False and right is False:
+        print('stop')
+    elif (right and (left is False)) or midelOFaLine(left_line) > midelOFaLine(right_line):
         print('left')
-    elif ((right == False) & left):
+    elif ((right is False) and left) or midelOFaLine(right_line) > midelOFaLine(left_line):
         print('right')
     else:
         print('stop')
+
 
 
 def display_lines(image, lines):
@@ -177,7 +198,7 @@ def main():
         averaged_lines = average_slope_intercept(edges, lines)
         line_image = display_lines(frame, averaged_lines)
         res = cv.addWeighted(frame, 0.8, line_image, 1, 1)
-        showImages(frame, mask, edges, roi, res)  # Activates the function showImages
+        showImages(frame, mask, edges, roi, res, line_image)  # Activates the function showImages
 
         flag = breakLoop()  # Activates the function showImages breakLoop
     cap.release()

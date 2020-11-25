@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 if __name__ == '__main__':
     print(cv2.__version__)
-    img = cv2.imread('road.jpg', 1)
+    img = cv2.imread('imgRoodP.jpg', 1)
     cv2.imshow('img', img)
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)

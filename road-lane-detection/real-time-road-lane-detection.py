@@ -50,13 +50,13 @@ def infroCam(frame, cap):
 
 # make the mask image
 def makeMask(frame):
-    l_h = 81
-    l_s = 22
-    l_v = 89
+    l_h = 92
+    l_s = 48
+    l_v = 43
 
-    u_h = 117
-    u_s = 104
-    u_v = 128
+    u_h = 121
+    u_s = 134
+    u_v = 146
 
     l_b = np.array([l_h, l_s, l_v])
     u_b = np.array([u_h, u_s, u_v])
@@ -118,12 +118,47 @@ def midelOFaLine(lines_coordinates):
     return np.array([xMID, yMID])
 
 
-def midelOFrode(lineL, lineR):
+def midelOfRode(lineL, lineR):
     lineMidL = midelOFaLine(lineL)
     lineMidR = midelOFaLine(lineR)
     midX = (lineL[0] + lineR[0]) / 2
     midY = (lineL[1] + lineR[1]) / 2
     return np.array([midX, midY])
+
+d ={'mid':0, 'stop':0, 'left':0, 'right':0, 'right + drive':0, 'left + drive':0, 'error':0}
+
+def checkAndPrint(left_fit, right_fit, image):
+    if left_fit:
+        left_fit_average = np.average(left_fit, axis=0)
+        # print(left_fit_average, 'left')
+        left = True
+        left_line = create_coordinates(image, left_fit_average)
+        # print(left_line, "left_line")
+    else:
+        left = False
+    if right_fit:
+        right_fit_average = np.average(right_fit, axis=0)
+        # print(right_fit_average, 'right')
+        right = True
+        right_line = create_coordinates(image, right_fit_average)
+        # print(right_line, "right_line")
+    else:
+        right = False
+
+    if (left and right and (310 < midelOfRode(left_line, right_line)[0] < 330)) and (left and right and midelOFaLine(left_line)[1] == midelOFaLine(right_line)[1]):
+        print("mid")
+    elif left is False and right is False:
+        print('stop')
+    elif right and (left is False):
+        print('left')
+    elif (right is False) and left:
+        print('right')
+    elif midelOfRode(left_line, right_line)[0] > 330:
+        print('right + drive')
+    elif 310 > midelOfRode(left_line, right_line)[0]:
+        print('left + drive')
+    else:
+        print('error')
 
 
 def average_slope_intercept(image, lines):
@@ -141,34 +176,7 @@ def average_slope_intercept(image, lines):
                 left_fit.append((slope, intercept))
             else:
                 right_fit.append((slope, intercept))
-    if left_fit:
-        left_fit_average = np.average(left_fit, axis=0)
-        # print(left_fit_average, 'left')
-        left = True
-        left_line = create_coordinates(image, left_fit_average)
-        # print(left_line, "left_line")
-    else:
-        left = False
-    if right_fit:
-        right_fit_average = np.average(right_fit, axis=0)
-        # print(right_fit_average, 'right')
-        right = True
-        right_line = create_coordinates(image, right_fit_average)
-        # print(right_line, "right_line")
-    else:
-        right = False
-    #if right and left:
-        #print('ok')
-    if left and right and (300 < midelOFrode(left_line, right_line)[0] < 340):
-        print("mid")
-    elif left is False and right is False:
-        print('stop')
-    elif (right and (left is False)) or midelOFaLine(left_line) > midelOFaLine(right_line):
-        print('left')
-    elif ((right is False) and left) or midelOFaLine(right_line) > midelOFaLine(left_line):
-        print('right')
-    else:
-        print('stop')
+    checkAndPrint(left_fit, right_fit, image)
 
 
 

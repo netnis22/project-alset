@@ -3,6 +3,7 @@ import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime
+import operator
 
 
 # פונקציות שאני לא מישתמש
@@ -125,9 +126,12 @@ def midelOfRode(lineL, lineR):
     midY = (lineL[1] + lineR[1]) / 2
     return np.array([midX, midY])
 
-d ={'mid':0, 'stop':0, 'left':0, 'right':0, 'right + drive':0, 'left + drive':0, 'error':0}
+
+d = {'mid': 0, 'stop': 0, 'left': 0, 'right': 0, 'right + drive': 0, 'left + drive': 0, 'error': 0}
+
 
 def checkAndPrint(left_fit, right_fit, image):
+    msg = ''
     if left_fit:
         left_fit_average = np.average(left_fit, axis=0)
         # print(left_fit_average, 'left')
@@ -145,20 +149,24 @@ def checkAndPrint(left_fit, right_fit, image):
     else:
         right = False
 
-    if (left and right and (310 < midelOfRode(left_line, right_line)[0] < 330)) and (left and right and midelOFaLine(left_line)[1] == midelOFaLine(right_line)[1]):
-        print("mid")
+    if (left and right and (310 < midelOfRode(left_line, right_line)[0] < 330)) and (
+            left and right and midelOFaLine(left_line)[1] == midelOFaLine(right_line)[1]):
+        msg = 'mid'
     elif left is False and right is False:
-        print('stop')
+        msg = 'stop'
     elif right and (left is False):
-        print('left')
+        msg = 'left'
     elif (right is False) and left:
-        print('right')
+        msg = 'right'
     elif midelOfRode(left_line, right_line)[0] > 330:
-        print('right + drive')
+        msg = 'right + drive'
     elif 310 > midelOfRode(left_line, right_line)[0]:
-        print('left + drive')
+        msg = 'left + drive'
     else:
-        print('error')
+        msg = 'error'
+
+    d[msg] = d[msg] + 1
+    # print(msg)
 
 
 def average_slope_intercept(image, lines):
@@ -179,7 +187,6 @@ def average_slope_intercept(image, lines):
     checkAndPrint(left_fit, right_fit, image)
 
 
-
 def display_lines(image, lines):
     line_image = np.zeros_like(image)
     if lines is not None:
@@ -189,6 +196,7 @@ def display_lines(image, lines):
 
 
 def main():
+    counter = 0
     flag = True
     cap = cv.VideoCapture(0)
 
@@ -204,6 +212,12 @@ def main():
 
         lines = cv.HoughLinesP(roi, 2, np.pi / 180, 100, np.array([]), minLineLength=40, maxLineGap=5)
         averaged_lines = average_slope_intercept(edges, lines)
+        counter += 1
+        if counter > 30:
+            print(max(d.items(), key=operator.itemgetter(1))[0])
+            counter = 0
+            for i in d.keys():
+                d[i] = 0
         line_image = display_lines(frame, averaged_lines)
         res = cv.addWeighted(frame, 0.8, line_image, 1, 1)
         showImages(frame, mask, edges, roi, res, line_image)  # Activates the function showImages

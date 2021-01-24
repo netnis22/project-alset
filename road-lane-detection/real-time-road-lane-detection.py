@@ -73,10 +73,10 @@ def makeMask(frame):
 
 # show the images on the screen
 def showImages(frame, mask, edges, roi, res, line_image):
-    cv.imshow("video", frame)
-    cv.imshow("mask", mask)
-    cv.imshow('Edges', edges)
-    cv.imshow("roi", roi)
+    #cv.imshow("video", frame)
+    #cv.imshow("mask", mask)
+    #cv.imshow('Edges', edges)
+    #cv.imshow("roi", roi)
     cv.imshow("res", res)
     # cv.imshow("line_image", line_image)
 
@@ -208,7 +208,7 @@ def main():
         edges = cv.Canny(mask, 0, 400)  # Prepares an image only at the edges of the mask
         roi = region_of_interest(edges)
         debug = region_of_interest(frame)
-        cv.imshow('debug', debug)
+        #cv.imshow('debug', debug)
 
         lines = cv.HoughLinesP(roi, 2, np.pi / 180, 100, np.array([]), minLineLength=40, maxLineGap=5)
         averaged_lines = average_slope_intercept(edges, lines)

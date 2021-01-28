@@ -5,7 +5,8 @@ import serial
 
 
 def main1():
-    ser = serial.Serial('/dev/ttyACM0', 9600)
+    #ser = serial.Serial('/dev/ttyACM0', 9600)
+    ser = serial.Serial('/dev/ttyUSB0', 9600)
     # ser.flush()
     # ser.reset_input_buffer()
     # ser.reset_output_buffer()
@@ -24,10 +25,10 @@ def main1():
 
 
 def main():
-    ser = serial.Serial('/dev/ttyACM0', 9600)
+    ser = serial.Serial('/dev/ttyUSB0', 9600)
     # ser.flush()
     while True:
-        buff = input('> ').encode()
+        buff = (input('> ')+ "_"  ).encode()
         ser.write(buff)
         time.sleep(0.1)
         while ser.in_waiting > 0:

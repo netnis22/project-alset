@@ -7,9 +7,9 @@ def nothing(x):
  #cv2.namedWindow("Tracking")
 
 while True:
-    frame = cv2.imread('smarties.jpg')
+    frame = cv2.imread('smarties.png')
 
-    hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+    hsv = cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
 
     l_b = np.array([110,50,50])
     u_b = np.array([130,255,255])

@@ -151,17 +151,17 @@ def checkAndPrint(left_fit, right_fit, image):
 
     if (left and right and (310 < midelOfRode(left_line, right_line)[0] < 330)) and (
             left and right and midelOFaLine(left_line)[1] == midelOFaLine(right_line)[1]):
-        msg = 'mid'
+        msg = 'V120T0' #MID
     elif left is False and right is False:
-        msg = 'stop'
+        msg = 'V0T0' #STOP
     elif right and (left is False):
-        msg = 'left'
+        msg = 'V0T-40' #LEFT
     elif (right is False) and left:
-        msg = 'right'
+        msg = 'V0T40' #RIGHT
     elif midelOfRode(left_line, right_line)[0] > 330:
-        msg = 'right + drive'
+        msg = 'V40T20' #right + drive
     elif 310 > midelOfRode(left_line, right_line)[0]:
-        msg = 'left + drive'
+        msg = 'V40T-20' #left + drive
     else:
         msg = 'error'
 

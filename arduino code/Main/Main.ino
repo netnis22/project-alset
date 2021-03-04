@@ -1,4 +1,4 @@
-#inclode "Motor.h"
+#include "Motors.h"
 
 // Stabilizing PID
 #define Kp 90.0
@@ -28,7 +28,6 @@ double TurnErrorSum;
 
 double RightWheelSpeed;
 
-int TurnCorrection_R;
 
 
 
@@ -98,21 +97,53 @@ void Translation()
 //=============================================================
 void SpeedControl()
 {
-  double vCurr = RightWheelSpeed
-  double error = ComSpeed - vCurr;
+  double vCurr = RightWheelSpeed;
+  double error = (ComSpeed - vCurr);
+  double Kcorrection = VKp * error;
+  double Dcorrection = VKd * (error - OldSpeedError);
+
+  OldSpeedError = error ;
+  SpeedErrorSum += VKi * error;
+
+  if(SpeedErrorSum >= 3.0)
+  {
+    SpeedErrorSum = 3.0;
+  }
+  else if(SpeedErrorSum <= -3.0)
+  {
+    SpeedErrorSum = -3.0;
+  }
+    
+  double correction = Kcorrection + Dcorrection + SpeedErrorSum;
+  if(correction >= 3.0)
+  {
+    correction = 3.0;
+  }
+  else if(correction <= -3.0)
+  {
+    correction = -3.0;
+  }
+  
 }
 
 
 //---------------------------------------
 void setup() 
 {
+  MotorsInit();
   Serial.begin(9600);
 
+  ErrorSum = SpeedErrorSum = TurnErrorSum = 0.0;
+  ReferenceSpeed = 0.0;
+  TurnReference = 0.0;
+
+  OldTimer = OldSpeedTimer = millis();
 }
 
 //---------------------------------------
 void loop() 
 {
   CommProcess();
+  Translation();
   
 }

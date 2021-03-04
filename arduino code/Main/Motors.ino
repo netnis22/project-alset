@@ -1,10 +1,10 @@
-#include "Motor.h" 
+#include "Motors.h" 
 
 volatile long RightMotorCounter;
 volatile bool RightWheeltIsMovingForward;
 
 long OlddRightMotorCounter;
-int OlddRightCurrentEncoderTicks;
+int OldRightCurrentEncoderTicks;
 
 long RightMotorCounterCopy;
 bool RightWheeltIsMovingForwardCopy;
@@ -16,8 +16,8 @@ double GetRightWheelSpeed()
     // 2. this function must be called every 50 ms but caculats average 
     // speed for the last 100 ms
     
-    int currentEncoderTics = RightMotorCounterCopy - OldRightMotorCounter;
-    OldRightMotorCounter = RightMotorCounterCopy;
+    int currentEncoderTics = (RightMotorCounterCopy - OlddRightMotorCounter);
+    OlddRightMotorCounter = RightMotorCounterCopy;
     
     // V = (2*PI*mu*R)/E 
     // mu - ticks per second, E - encoder tick per round
@@ -37,7 +37,7 @@ void CopyISRCounters()
     noInterrupts();
     
     RightMotorCounterCopy = RightMotorCounter;
-    RighWheeltIsMovingForwardCopy = RighWheeltIsMovingForward;
+    RightWheeltIsMovingForwardCopy = RightWheeltIsMovingForward;
 
     interrupts();
 }
@@ -47,12 +47,12 @@ void RightEncoderISR()
 {
      if(digitalRead(M2_PHASE_B))
     {
-        RighWheeltIsMovingForward = true;
+        RightWheeltIsMovingForward = true;
         RightMotorCounter --;
     }
     else
     {
-        RighWheeltIsMovingForward = false;
+        RightWheeltIsMovingForward = false;
         RightMotorCounter ++;
     }
     
@@ -103,6 +103,6 @@ void MotorsInit()
     pinMode(IN3, OUTPUT);
     pinMode(IN4, OUTPUT);
   
-    LeftMotorCounter = 0L;
+    //LeftMotorCounter = 0L;
     RightMotorCounter = 0L;
 }

@@ -29,6 +29,7 @@ double TurnErrorSum;
 double RightWheelSpeed;
 
 
+//=============================================================
 
 
 //=============================================================
@@ -134,9 +135,10 @@ void setup()
   Serial.begin(9600);
 
   ErrorSum = SpeedErrorSum = TurnErrorSum = 0.0;
-  ReferenceSpeed = 0.0;
+  ComSpeed = 0.0;
   TurnReference = 0.0;
-
+  
+  attachInterrupt(digitalPinToInterrupt(M2_PHASE_A), RightEncoderISR, RISING);
   OldTimer = OldSpeedTimer = millis();
 }
 
@@ -145,5 +147,28 @@ void loop()
 {
   CommProcess();
   Translation();
+  
+  unsigned long currMillis = millis();
+    
+   if (currMillis - OldSpeedTimer >= 50L)
+    {
+      OldSpeedTimer = currMillis;
+      CopyISRCounters();
+
+      RightWheelSpeed = GetRightWheelSpeed();
+
+      SpeedControl();
+
+       double omegaCurr = (RightWheelSpeed) / DISTANCE;
+       double error = TurnReference - omegaCurr;
+       double Kcorrection = OKp * error;
+       double Dcorrection = OKd * (error - OldTurnError);
+       OldTurnError = error;
+       TurnErrorSum += OKi * error;
+       double correction = Kcorrection + Dcorrection + TurnErrorSum;
+
+       RightMotor((int)correction);
+       Serial.print((int)correction); 
+    }
   
 }

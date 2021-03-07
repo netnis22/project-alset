@@ -26,4 +26,7 @@
 //Whells
 #define Weel_Diameter 6.45
 
+// distance between wheels
+#define DISTANCE 18.5
+
 #endif

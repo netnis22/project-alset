@@ -1,5 +1,7 @@
 #include "Motors.h"
 
+
+#define ANGLE_OFFSET 1.0625
 // Stabilizing PID
 #define Kp 90.0
 #define Kd  40.0 
@@ -13,21 +15,28 @@
 #define OKd 0.0
 #define OKi 0.0
 
-double OldError; // for calculating derivative
+double OldError; 
 
-double ErrorSum; // for integration  
+double ErrorSum; 
 unsigned long OldTimer, OldSpeedTimer ;
 
 int ComSpeed;
-double OldSpeedError; // for calculating derivative
-double SpeedErrorSum; // for speed integration
+double OldSpeedError; 
+double SpeedErrorSum; 
 
 int TurnReference;
 double OldTurnError;
 double TurnErrorSum;
 
-double RightWheelSpeed;
+double ReferenceAngleY;
 
+double RightWheelSpeed, LeftWheelSpeed;
+
+
+double correction;
+
+int TurnCorrection_R;
+int TurnCorrection_L;
 
 //=============================================================
 
@@ -94,36 +103,83 @@ void Translation()
   }
 }
 //=============================================================
+void StabilizeRobot()
+{
 
+    double error = ReferenceAngleY;
+    
+    double Kcorrection = Kp * error;
+    double Dcorrection = Kd * (error - OldError);
+    OldError = error;
+    ErrorSum += Ki * error;
+    double correction = Kcorrection + Dcorrection + ErrorSum;
+
+    
+    //v גדול פי 6.3 ממה שנותנים לו
+    //t גדול פי 2 מימה שנותנים לו
+
+
+    double FinalspeedR=((int)correction + (int)TurnCorrection_R);
+    double FinalspeedL((int)correction + (int)TurnCorrection_L);
+
+    Print(Kcorrection,Dcorrection,ErrorSum,correction,FinalspeedR,FinalspeedL);
+    RightMotor(FinalspeedR);
+    LeftMotor(FinalspeedL);
+   
+   
+ 
+
+}
+void Print(double Kcorrection,double Dcorrection,double ErrorSum,double correction, double FinalspeedR, double FinalspeedL)
+{
+  Serial.print(" error: ");
+  Serial.print(ReferenceAngleY);
+  Serial.print(" Kcorrection: ");
+  Serial.print(Kcorrection);
+  Serial.print(" Dcorrection: ");
+  Serial.print(Dcorrection);
+  Serial.print(" ErrorSum: ");
+  Serial.print(ErrorSum);
+  Serial.print(" FinalspeedR: ");
+  Serial.print(FinalspeedR);
+  Serial.print(" FinalspeedL: ");
+  Serial.print(FinalspeedL);
+  Serial.print(" correction: ");
+  Serial.print(correction);
+  Serial.print('\n');
+}
 //=============================================================
 void SpeedControl()
 {
-  double vCurr = RightWheelSpeed;
+  double vCurr = (RightWheelSpeed - LeftWheelSpeed) / 2.0;
   double error = (ComSpeed - vCurr);
+  
   double Kcorrection = VKp * error;
   double Dcorrection = VKd * (error - OldSpeedError);
 
   OldSpeedError = error ;
   SpeedErrorSum += VKi * error;
-
+/*
   if(SpeedErrorSum >= 3.0)
   {
-    SpeedErrorSum = 3.0;
+    SpeedErrorSum = 3.0;N
   }
   else if(SpeedErrorSum <= -3.0)
   {
     SpeedErrorSum = -3.0;
   }
+  */
     
-  double correction = Kcorrection + Dcorrection + SpeedErrorSum;
-  if(correction >= 3.0)
+  correction = Kcorrection + Dcorrection + SpeedErrorSum;
+ /* if(correction >= 3.0)
   {
     correction = 3.0;
   }
   else if(correction <= -3.0)
   {
     correction = -3.0;
-  }
+  }*/
+  ReferenceAngleY = correction;
   
 }
 
@@ -135,9 +191,12 @@ void setup()
   Serial.begin(9600);
 
   ErrorSum = SpeedErrorSum = TurnErrorSum = 0.0;
+  ReferenceAngleY = ANGLE_OFFSET;
   ComSpeed = 0.0;
   TurnReference = 0.0;
-  
+  TurnCorrection_L = TurnCorrection_R = 0;
+
+  attachInterrupt(digitalPinToInterrupt(M1_PHASE_A), LeftEncoderISR, RISING);
   attachInterrupt(digitalPinToInterrupt(M2_PHASE_A), RightEncoderISR, RISING);
   OldTimer = OldSpeedTimer = millis();
 }
@@ -148,18 +207,24 @@ void loop()
   CommProcess();
   Translation();
   
-  unsigned long currMillis = millis();
-    
+  
+    unsigned long currMillis = millis();
+    if(currMillis - OldTimer >= 10L)
+    {
+        OldTimer = currMillis;
+         StabilizeRobot(); 
+    }
    if (currMillis - OldSpeedTimer >= 50L)
     {
       OldSpeedTimer = currMillis;
       CopyISRCounters();
 
       RightWheelSpeed = GetRightWheelSpeed();
+      LeftWheelSpeed = GetLeftWheelSpeed();
 
       SpeedControl();
 
-       double omegaCurr = (RightWheelSpeed) / DISTANCE;
+       double omegaCurr = (RightWheelSpeed - LeftWheelSpeed) / DISTANCE;
        double error = TurnReference - omegaCurr;
        double Kcorrection = OKp * error;
        double Dcorrection = OKd * (error - OldTurnError);
@@ -167,8 +232,11 @@ void loop()
        TurnErrorSum += OKi * error;
        double correction = Kcorrection + Dcorrection + TurnErrorSum;
 
-       RightMotor((int)correction);
-       Serial.print((int)correction); 
+       TurnCorrection_R = correction;
+       TurnCorrection_L = -correction;
+       
+       
+      
     }
   
 }

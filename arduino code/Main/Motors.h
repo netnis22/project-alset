@@ -29,4 +29,11 @@
 // distance between wheels
 #define DISTANCE 18.5
 
+void MotorsInit();
+void RightMotor(int power);
+void LeftMotor(int power);
+double GetRightWheelSpeed();
+double GetLeftWheelSpeed();
+
+
 #endif

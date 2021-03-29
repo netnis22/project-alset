@@ -115,14 +115,16 @@ void StabilizeRobot()
     double correction = Kcorrection + Dcorrection + ErrorSum;
 
     
-    //v גדול פי 6.3 ממה שנותנים לו
+    //v גדול פי 6.3 מ מה שנותנים לו
     //t גדול פי 2 מימה שנותנים לו
+
 
 
     double FinalspeedR=((int)correction + (int)TurnCorrection_R);
     double FinalspeedL((int)correction + (int)TurnCorrection_L);
 
     Print(Kcorrection,Dcorrection,ErrorSum,correction,FinalspeedR,FinalspeedL);
+    
     RightMotor(FinalspeedR);
     LeftMotor(FinalspeedL);
    
@@ -149,9 +151,35 @@ void Print(double Kcorrection,double Dcorrection,double ErrorSum,double correcti
   Serial.print('\n');
 }
 //=============================================================
+
+void PrintSpeetControl(double RightWheelSpeed ,double LeftWheelSpeed, double vCurr, double error, double Kcorrection, double Dcorrection, double OldSpeedError, double SpeedErrorSum, double correction )
+{
+  Serial.print(" RightWheelSpeed: ");
+  Serial.print(RightWheelSpeed);
+  Serial.print(" LeftWheelSpeed: ");
+  Serial.print(LeftWheelSpeed);
+  Serial.print(" vCurr: ");
+  Serial.print(vCurr);
+  Serial.print(" error: ");
+  Serial.print(error);
+  Serial.print(" Kcorrection: ");
+  Serial.print(Kcorrection);
+  Serial.print(" Dcorrection: ");
+  Serial.print(Dcorrection);
+  Serial.print(" OldSpeedError: ");
+  Serial.print(OldSpeedError);
+  Serial.print(" SpeedErrorSum: ");
+  Serial.print(SpeedErrorSum);
+  Serial.print(" correction: ");
+  Serial.print(correction);
+  Serial.print('\n');
+  
+}
+
+//=============================================================
 void SpeedControl()
 {
-  double vCurr = (RightWheelSpeed - LeftWheelSpeed) / 2.0;
+  double vCurr = (RightWheelSpeed + LeftWheelSpeed) / 2.0;
   double error = (ComSpeed - vCurr);
   
   double Kcorrection = VKp * error;
@@ -162,13 +190,13 @@ void SpeedControl()
 /*
   if(SpeedErrorSum >= 3.0)
   {
-    SpeedErrorSum = 3.0;N
+    SpeedErrorSum = 3.0;
   }
   else if(SpeedErrorSum <= -3.0)
   {
     SpeedErrorSum = -3.0;
-  }
-  */
+  }*/
+  
     
   correction = Kcorrection + Dcorrection + SpeedErrorSum;
  /* if(correction >= 3.0)
@@ -178,8 +206,10 @@ void SpeedControl()
   else if(correction <= -3.0)
   {
     correction = -3.0;
-  }*/
+  }
+  */
   ReferenceAngleY = correction;
+  PrintSpeetControl( RightWheelSpeed , LeftWheelSpeed,  vCurr,  error,  Kcorrection,  Dcorrection,  OldSpeedError,  SpeedErrorSum,  correction );
   
 }
 
@@ -191,10 +221,11 @@ void setup()
   Serial.begin(9600);
 
   ErrorSum = SpeedErrorSum = TurnErrorSum = 0.0;
-  ReferenceAngleY = ANGLE_OFFSET;
+  ReferenceAngleY = 0;
   ComSpeed = 0.0;
   TurnReference = 0.0;
   TurnCorrection_L = TurnCorrection_R = 0;
+  RightWheelSpeed = LeftWheelSpeed = 0.0;
 
   attachInterrupt(digitalPinToInterrupt(M1_PHASE_A), LeftEncoderISR, RISING);
   attachInterrupt(digitalPinToInterrupt(M2_PHASE_A), RightEncoderISR, RISING);
@@ -209,6 +240,7 @@ void loop()
   
   
     unsigned long currMillis = millis();
+    if(currMillis>10000){
     if(currMillis - OldTimer >= 10L)
     {
         OldTimer = currMillis;
@@ -237,6 +269,7 @@ void loop()
        
        
       
+    }
     }
   
 }

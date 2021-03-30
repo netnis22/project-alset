@@ -103,6 +103,8 @@ void Translation()
   }
 }
 //=============================================================
+int Er;
+
 void StabilizeRobot()
 {
 
@@ -123,10 +125,14 @@ void StabilizeRobot()
     double FinalspeedR=((int)correction + (int)TurnCorrection_R);
     double FinalspeedL((int)correction + (int)TurnCorrection_L);
 
-    Print(Kcorrection,Dcorrection,ErrorSum,correction,FinalspeedR,FinalspeedL);
+    //Print(Kcorrection,Dcorrection,ErrorSum,correction,FinalspeedR,FinalspeedL);
     
-    RightMotor(FinalspeedR);
-    LeftMotor(FinalspeedL);
+   // RightMotor(FinalspeedR);
+   // LeftMotor(FinalspeedL);
+   
+
+   RightMotor(ComSpeed + TurnReference - Er);
+   LeftMotor(ComSpeed - TurnReference);
    
    
  
@@ -152,7 +158,7 @@ void Print(double Kcorrection,double Dcorrection,double ErrorSum,double correcti
 }
 //=============================================================
 
-void PrintSpeetControl(double RightWheelSpeed ,double LeftWheelSpeed, double vCurr, double error, double Kcorrection, double Dcorrection, double OldSpeedError, double SpeedErrorSum, double correction )
+void PrintSpeetControl(double RightWheelSpeed ,double LeftWheelSpeed, double vCurr, double error, double Kcorrection, double Dcorrection, double OldSpeedError, double SpeedErrorSum, double correction , int Er )
 {
   Serial.print(" RightWheelSpeed: ");
   Serial.print(RightWheelSpeed);
@@ -172,13 +178,17 @@ void PrintSpeetControl(double RightWheelSpeed ,double LeftWheelSpeed, double vCu
   Serial.print(SpeedErrorSum);
   Serial.print(" correction: ");
   Serial.print(correction);
+  Serial.print(" Er: ");
+  Serial.print(Er);
   Serial.print('\n');
   
 }
 
+
 //=============================================================
 void SpeedControl()
 {
+  Er = (RightWheelSpeed - LeftWheelSpeed) / (RightWheelSpeed /ComSpeed);
   double vCurr = (RightWheelSpeed + LeftWheelSpeed) / 2.0;
   double error = (ComSpeed - vCurr);
   
@@ -209,7 +219,7 @@ void SpeedControl()
   }
   */
   ReferenceAngleY = correction;
-  PrintSpeetControl( RightWheelSpeed , LeftWheelSpeed,  vCurr,  error,  Kcorrection,  Dcorrection,  OldSpeedError,  SpeedErrorSum,  correction );
+  PrintSpeetControl( RightWheelSpeed , LeftWheelSpeed,  vCurr,  error,  Kcorrection,  Dcorrection,  OldSpeedError,  SpeedErrorSum,  correction ,Er);
   
 }
 
@@ -226,6 +236,7 @@ void setup()
   TurnReference = 0.0;
   TurnCorrection_L = TurnCorrection_R = 0;
   RightWheelSpeed = LeftWheelSpeed = 0.0;
+  Er = 0;
 
   attachInterrupt(digitalPinToInterrupt(M1_PHASE_A), LeftEncoderISR, RISING);
   attachInterrupt(digitalPinToInterrupt(M2_PHASE_A), RightEncoderISR, RISING);

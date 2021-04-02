@@ -10,9 +10,9 @@ def main():
         buff = (input('> ')+ "_"  ).encode()
         ser.write(buff)
         time.sleep(0.1)
-        while ser.in_waiting > 0:דד
-            line = ser.read().decode()ד
-            print(line)
+       # while ser.in_waiting > 0:דד
+            #line = ser.read().decode()ד
+           # print(line)
     time.sleep(0.1)
 
 if __name__ == '__main__':

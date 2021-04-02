@@ -151,17 +151,17 @@ def checkAndPrint(left_fit, right_fit, image):
 
     if (left and right and (310 < midelOfRode(left_line, right_line)[0] < 330)) and (
             left and right and midelOFaLine(left_line)[1] == midelOFaLine(right_line)[1]):
-        msg = 'V120T0' #MID
+        msg = 'V20T0' #MID
     elif left is False and right is False:
         msg = 'V0T0' #STOP
     elif right and (left is False):
-        msg = 'V0T-40' #LEFT
+        msg = 'V0T-10' #LEFT
     elif (right is False) and left:
-        msg = 'V0T40' #RIGHT
+        msg = 'V0T10' #RIGHT
     elif midelOfRode(left_line, right_line)[0] > 330:
-        msg = 'V40T20' #right + drive
+        msg = 'V20T10' #right + drive
     elif 310 > midelOfRode(left_line, right_line)[0]:
-        msg = 'V40T-20' #left + drive
+        msg = 'V20T-10' #left + drive
     else:
         msg = 'error'
 
@@ -199,6 +199,9 @@ def main():
     counter = 0
     flag = True
     cap = cv.VideoCapture(0)
+    
+     #communication
+     ser = serial.Serial('/dev/ttyUSB0', 9600)
 
     while flag & cap.isOpened():
         _, frame = cap.read()
@@ -209,6 +212,11 @@ def main():
         roi = region_of_interest(edges)
         debug = region_of_interest(frame)
         #cv.imshow('debug', debug)
+        
+        #communication
+        buff = (input('> ')+ "_"  ).encode()
+        ser.write(buff)
+        time.sleep(0.1)
 
         lines = cv.HoughLinesP(roi, 2, np.pi / 180, 100, np.array([]), minLineLength=40, maxLineGap=5)
         averaged_lines = average_slope_intercept(edges, lines)

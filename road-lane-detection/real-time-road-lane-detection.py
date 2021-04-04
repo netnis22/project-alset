@@ -129,9 +129,9 @@ def midelOfRode(lineL, lineR):
 
 d = {'mid': 0, 'stop': 0, 'left': 0, 'right': 0, 'right + drive': 0, 'left + drive': 0, 'error': 0}
 
-
+msg = ''
 def checkAndPrint(left_fit, right_fit, image):
-    msg = ''
+    global msg
     if left_fit:
         left_fit_average = np.average(left_fit, axis=0)
         # print(left_fit_average, 'left')
@@ -151,7 +151,7 @@ def checkAndPrint(left_fit, right_fit, image):
 
     if (left and right and (310 < midelOfRode(left_line, right_line)[0] < 330)) and (
             left and right and midelOFaLine(left_line)[1] == midelOFaLine(right_line)[1]):
-        msg = 'V20T0' #MID
+        msg = 'V10T0' #MID
     elif left is False and right is False:
         msg = 'V0T0' #STOP
     elif right and (left is False):
@@ -196,11 +196,14 @@ def display_lines(image, lines):
 
 
 def main():
+    global msg
     counter = 0
     flag = True
-    cap = cv.VideoCapture(0)
+    cap = cv.VideoCapture(2)
+    cap.set(3, 640)
+    cap.set(4, 480)
     
-     #communication
+    #communication
      ser = serial.Serial('/dev/ttyUSB0', 9600)
 
     while flag & cap.isOpened():
@@ -213,8 +216,9 @@ def main():
         debug = region_of_interest(frame)
         #cv.imshow('debug', debug)
         
+        
         #communication
-        buff = (input('> ')+ "_"  ).encode()
+        buff = msg.encode()
         ser.write(buff)
         time.sleep(0.1)
 

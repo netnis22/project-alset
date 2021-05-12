@@ -6,7 +6,7 @@
 //=============================================================
 // Stabilizing PID
 #define Kp 90.0
-#define Kd  40.0 
+#define Kd  40.0 // k/dt 2/0.05 =40
 #define Ki 0.0
 
 #define VKp 0.07
@@ -151,7 +151,7 @@ void CommProcess()
     
     rxbuff += (char)ch ;
 }
-
+// S1234#
 //=============================================================
 void loop() 
 {

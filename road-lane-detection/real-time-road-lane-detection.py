@@ -1,9 +1,13 @@
 # importing
+#!/usr/bin/env python3
+
 import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
 import datetime
 import operator
+import time
+import serial
 
 
 # פונקציות שאני לא מישתמש
@@ -75,8 +79,8 @@ def makeMask(frame):
 def showImages(frame, mask, edges, roi, res, line_image):
     #cv.imshow("video", frame)
     #cv.imshow("mask", mask)
-    #cv.imshow('Edges', edges)
-    #cv.imshow("roi", roi)
+    cv.imshow('Edges', edges)
+    cv.imshow("roi", roi)
     cv.imshow("res", res)
     # cv.imshow("line_image", line_image)
 
@@ -84,7 +88,7 @@ def showImages(frame, mask, edges, roi, res, line_image):
 # Checks if esc is pressed and if esc is pressed returns False otherwise returns True
 # The function exists to exit the loop
 def breakLoop():
-    key = cv.waitKey(1)
+    key = cv.waitKey(300)
     if key == 27:
         return False
     return True
@@ -92,13 +96,13 @@ def breakLoop():
 
 def region_of_interest(edges):
     height = edges.shape[0]
-    polygons1 = np.array([[(0, height), (640, height), (320, 240)]])
-    # polygons1 = np.array([[(0, height), (640, height), (0, 250)]])
-    # polygons2 = np.array([[(0, 250), (640, height), (640, 250)]])
+    #polygons1 = np.array([[(0, height), (640, height), (320, 240)]])
+    polygons1 = np.array([[(0, height), (640, height), (0, 250)]])
+    polygons2 = np.array([[(0, 250), (640, height), (640, 250)]])
 
     mask = np.zeros_like(edges)
     cv.fillPoly(mask, polygons1, 255)
-    # cv.fillPoly(mask, polygons2, 255)
+    cv.fillPoly(mask, polygons2, 255)
 
     masked_image = cv.bitwise_and(edges, mask)
     return masked_image
@@ -127,11 +131,42 @@ def midelOfRode(lineL, lineR):
     return np.array([midX, midY])
 
 
-d = {'mid': 0, 'stop': 0, 'left': 0, 'right': 0, 'right + drive': 0, 'left + drive': 0, 'error': 0}
+d = {'V10T': 0, 'V0T': 0, 'V0T': 0, 'V0T': 0, 'V10T': 0, 'V10T'+: 0, 'error': 0}
+
+turnError = 0
+גרגdef errorTurn(left_fit, right_fit, image):
+    global turnError
+
+        if left_fit:
+        left_fit_average = np.average(left_fit, axis=0)
+        # print(left_fit_average, 'left')
+        left = True
+        left_line = create_coordinates(image, left_fit_average)
+        # print(left_line, "left_line")
+    else:
+        left = False
+    if right_fit:
+        right_fit_average = np.average(right_fit, axis=0)
+        # print(right_fit_average, 'right')
+        right = True
+        right_line = create_coordinates(image, right_fit_average)
+        # print(right_line, "right_line")
+    else:
+        right = False
+
+    if(left and right):
+        turnError=((midelOfRode(left_line, right_line)[0])-320)/320
+    elif(not(right)):
+        turnError=1
+    elif(not(left)):
+        turnError=-1
+    else:
+        turnError=0
 
 
+msg = ''
 def checkAndPrint(left_fit, right_fit, image):
-    msg = ''
+    global msg
     if left_fit:
         left_fit_average = np.average(left_fit, axis=0)
         # print(left_fit_average, 'left')
@@ -151,17 +186,17 @@ def checkAndPrint(left_fit, right_fit, image):
 
     if (left and right and (310 < midelOfRode(left_line, right_line)[0] < 330)) and (
             left and right and midelOFaLine(left_line)[1] == midelOFaLine(right_line)[1]):
-        msg = 'mid'
+        msg = 'V10T' #MID
     elif left is False and right is False:
-        msg = 'stop'
+        msg = 'V0T' #STOP
     elif right and (left is False):
-        msg = 'left'
+        msg = 'V0T' #LEFT
     elif (right is False) and left:
-        msg = 'right'
+        msg = 'V0T' #RIGHT
     elif midelOfRode(left_line, right_line)[0] > 330:
-        msg = 'right + drive'
+        msg = 'V10T'+ #right + drive
     elif 310 > midelOfRode(left_line, right_line)[0]:
-        msg = 'left + drive'
+        msg = 'V10T'+ #left + drive
     else:
         msg = 'error'
 
@@ -196,9 +231,17 @@ def display_lines(image, lines):
 
 
 def main():
+    #communication
+    ser = serial.Serial('/dev/ttyACM0', 9600)
+
     counter = 0
     flag = True
     cap = cv.VideoCapture(0)
+    cap.set(3, 640)
+    cap.set(4, 480)
+    cap.set(5, 10)
+
+
 
     while flag & cap.isOpened():
         _, frame = cap.read()
@@ -210,17 +253,27 @@ def main():
         debug = region_of_interest(frame)
         #cv.imshow('debug', debug)
 
+
+
+        msg = 'V0T0'+"_"
         lines = cv.HoughLinesP(roi, 2, np.pi / 180, 100, np.array([]), minLineLength=40, maxLineGap=5)
         averaged_lines = average_slope_intercept(edges, lines)
         counter += 1
-        if counter > 30:
-            print(max(d.items(), key=operator.itemgetter(1))[0])
+        if counter > 2:
+            msg = (max(d.items(), key=operator.itemgetter(1))[0])
             counter = 0
             for i in d.keys():
                 d[i] = 0
+            print(f'{msg}{turnError}')
+            #communication
+            buff = (f'{msg}{turnError}').encode()
+            ser.write(buff)
+
         line_image = display_lines(frame, averaged_lines)
         res = cv.addWeighted(frame, 0.8, line_image, 1, 1)
         showImages(frame, mask, edges, roi, res, line_image)  # Activates the function showImages
+
+
 
         flag = breakLoop()  # Activates the function showImages breakLoop
     cap.release()

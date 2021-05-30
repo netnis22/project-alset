@@ -55,7 +55,7 @@ def infroCam(frame, cap):
 
 # make the mask image
 def makeMask(frame):
-    l_h = 92
+    l_h = 82
     l_s = 48
     l_v = 43
 
@@ -88,7 +88,7 @@ def showImages(frame, mask, edges, roi, res, line_image):
 # Checks if esc is pressed and if esc is pressed returns False otherwise returns True
 # The function exists to exit the loop
 def breakLoop():
-    key = cv.waitKey(300)
+    key = cv.waitKey(1000)
     if key == 27:
         return False
     return True
@@ -131,13 +131,13 @@ def midelOfRode(lineL, lineR):
     return np.array([midX, midY])
 
 
-d = {'V10T': 0, 'V0T': 0, 'V0T': 0, 'V0T': 0, 'V10T': 0, 'V10T'+: 0, 'error': 0}
+d = {'V10T': 0, 'V0T': 0, 'V0T': 0, 'V0T': 0, 'V10T': 0, 'V10T': 0, 'error': 0}
 
-turnError = 0
-גרגdef errorTurn(left_fit, right_fit, image):
+turnError = 8
+def errorTurn(left_fit, right_fit, image):
     global turnError
 
-        if left_fit:
+    if left_fit:
         left_fit_average = np.average(left_fit, axis=0)
         # print(left_fit_average, 'left')
         left = True
@@ -156,9 +156,9 @@ turnError = 0
 
     if(left and right):
         turnError=((midelOfRode(left_line, right_line)[0])-320)/320
-    elif(not(right)):
+    elif(not(right) and left):
         turnError=1
-    elif(not(left)):
+    elif(not(left) and right):
         turnError=-1
     else:
         turnError=0
@@ -194,9 +194,9 @@ def checkAndPrint(left_fit, right_fit, image):
     elif (right is False) and left:
         msg = 'V0T' #RIGHT
     elif midelOfRode(left_line, right_line)[0] > 330:
-        msg = 'V10T'+ #right + drive
+        msg = 'V10T' #right + drive
     elif 310 > midelOfRode(left_line, right_line)[0]:
-        msg = 'V10T'+ #left + drive
+        msg = 'V10T' #left + drive
     else:
         msg = 'error'
 
@@ -219,6 +219,7 @@ def average_slope_intercept(image, lines):
                 left_fit.append((slope, intercept))
             else:
                 right_fit.append((slope, intercept))
+    errorTurn(left_fit, right_fit, image)
     checkAndPrint(left_fit, right_fit, image)
 
 
@@ -264,9 +265,9 @@ def main():
             counter = 0
             for i in d.keys():
                 d[i] = 0
-            print(f'{msg}{turnError}')
+            print((f'{msg}{turnError}')+'_')
             #communication
-            buff = (f'{msg}{turnError}').encode()
+            buff = ((f'{msg}{turnError}')+'_').encode()
             ser.write(buff)
 
         line_image = display_lines(frame, averaged_lines)

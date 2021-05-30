@@ -71,7 +71,7 @@ void CopyISRCounters()
 
 //======================================
 
-void LeftEncoderISR()
+void RightEncoderISR() 
 {
     if(digitalRead(M1_PHASE_B))
     {
@@ -86,7 +86,7 @@ void LeftEncoderISR()
     
 }
 //======================================
-void RightEncoderISR()
+void LeftEncoderISR()
 {
      if(digitalRead(M2_PHASE_B))
     {
@@ -103,7 +103,7 @@ void RightEncoderISR()
 
 //======================================
 
-void RightMotor(int power)
+void LeftMotor(int power)
 {
     // if power >= 0 then move forward, direction = true
     // otherwise move backward, direction = false and make power positive
@@ -133,7 +133,7 @@ void RightMotor(int power)
 }
 //=============================================================
 
-void LeftMotor(int power)
+void RightMotor(int power)
 {
     // if power >= 0 then move forward, direction = true
     // otherwise move backward, direction = false and make power positive

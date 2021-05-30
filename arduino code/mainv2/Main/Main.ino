@@ -18,7 +18,7 @@ int ComSpeed;
 double OldSpeedError; 
 double SpeedErrorSum; 
 
-int TurnReference;
+double TurnReference;
 double OldTurnError;
 double TurnErrorSum;
 
@@ -87,13 +87,13 @@ void Translation()
     TurnReferenceSTR = String(ComplitData.substring(IndexOfT+1,ComplitDataLength));
 
     ComSpeed = ComSpeedSTR.toInt();
-    TurnReference = TurnReferenceSTR.toInt();
-    Serial.print(ComplitData);
-    Serial.print('\n');
-    Serial.print(ComSpeed);
-    Serial.print('\n');
-    Serial.print(TurnReference);
+    TurnReference = TurnReferenceSTR.toDouble(); 
+    
+    
   }
+
+    //Serial.print(ComSpeed);
+    //Serial.print('\n');
 }
 //=============================================================
 int Er;
@@ -136,22 +136,22 @@ void Print(double correction, double FinalspeedR, double FinalspeedL)
 }
 void PrintSpeetControl(double RightWheelSpeed ,double LeftWheelSpeed, double vCurr, double error, double Kcorrection, double Dcorrection, double OldSpeedError, double SpeedErrorSum, double correction , int Er )
 {
-  Serial.print(" RightWheelSpeed: ");
-  Serial.print(RightWheelSpeed);
-  Serial.print(" LeftWheelSpeed: ");
-  Serial.print(LeftWheelSpeed);
+  //Serial.print(" RightWheelSpeed: ");
+  //Serial.print(RightWheelSpeed);
+  //Serial.print(" LeftWheelSpeed: ");
+  //Serial.print(LeftWheelSpeed);
   Serial.print(" vCurr: ");
   Serial.print(vCurr);
   Serial.print(" error: ");
   Serial.print(error);
-  Serial.print(" Kcorrection: ");
-  Serial.print(Kcorrection);
-  Serial.print(" Dcorrection: ");
-  Serial.print(Dcorrection);
-  Serial.print(" OldSpeedError: ");
-  Serial.print(OldSpeedError);
-  Serial.print(" SpeedErrorSum: ");
-  Serial.print(SpeedErrorSum);
+  //Serial.print(" Kcorrection: ");
+  //Serial.print(Kcorrection);
+  //Serial.print(" Dcorrection: ");
+  //Serial.print(Dcorrection);
+  //Serial.print(" OldSpeedError: ");
+  //Serial.print(OldSpeedError);
+  //Serial.print(" SpeedErrorSum: ");
+  //Serial.print(SpeedErrorSum);
   Serial.print(" correction: ");
   Serial.print(correction);
   Serial.print(" Er: ");
@@ -235,6 +235,7 @@ void loop()
 {
   CommProcess();
   Translation();
+    
   
   
     unsigned long currMillis = millis();
@@ -255,7 +256,7 @@ void loop()
       SpeedControl();
 
        double omegaCurr = (RightWheelSpeed - LeftWheelSpeed) / DISTANCE;
-       double error = TurnReference - omegaCurr;
+       double error = TurnReference*10-omegaCurr;
        double Kcorrection = OKp * error;
        double Dcorrection = OKd * (error - OldTurnError);
        OldTurnError = error;

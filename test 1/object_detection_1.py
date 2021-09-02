@@ -9,6 +9,8 @@ cap =cv2.VideoCapture(0)
 
 cv2.namedWindow("Tracking")
 
+cap.set(3, 320)
+cap.set(4, 240)
 
 cv2.createTrackbar("LH", "Tracking", 0, 255, nothinf)
 cv2.createTrackbar("LS", "Tracking", 0, 255, nothinf)
@@ -39,11 +41,11 @@ while True:
 
     res = cv2.bitwise_and(frame, frame, mask=mask)
 
-    cv2.imshow("frame", frame)
-    cv2.imshow("mask", mask)
+    #cv2.imshow("frame", frame)
+    #cv2.imshow("mask", mask)
     cv2.imshow("res", res)
 
-    key = cv2.waitKey(1)
+    key = cv2.waitKey(100)
     if key == 27:
         break
 cap.release()

@@ -44,12 +44,11 @@ def click_event2(event, x, y, flags, param):
         cv2.circle(img, (x, y), 3, (0, 0, 255), -1)
         myColorImage = np.zeros((512, 512, 3), np.uint8)
         myColorImage[:] = [blue, green, red]
-        hsv = cv.cvtColor(myColorImage, cv.COLOR_BGR2HSV)
-        cv2.imshow('color', hsv)
+        cv2.imshow('color', myColorImage)
 
 
 # img = np.zeros((512, 512, 3), np.uint8)
-img = cv2.imread('/home/pi/Desktop/test 1/rodeFinal.jpg', 1)
+img = cv2.imread('road2.jpg', 1)
 cv2.imshow('image', img)
 points = []
 

@@ -58,15 +58,21 @@ def infroCam(frame, cap):
 # make the mask image
 def makeMask(frame):
 
+    #l_h = 0
+    #l_s = 0
+    #l_v = 0
+
+    #u_h = 9
+    #u_s = 180
+    #u_v = 255
+
     l_h = 0
-    l_s = 0
+    l_s = 103
     l_v = 0
 
-    u_h = 9
-    u_s = 180
+    u_h = 255
+    u_s = 255
     u_v = 255
-
-
 
     l_b = np.array([l_h, l_s, l_v])
     u_b = np.array([u_h, u_s, u_v])
@@ -94,7 +100,7 @@ def showImages(frame, mask, edges, roi, res, line_image,debug):
 # Checks if esc is pressed and if esc is pressed returns False otherwise returns True
 # The function exists to exit the loop
 def breakLoop():
-    key = cv.waitKey(1000)
+    key = cv.waitKey(1)
     if key == 27:
         return False
     return True
@@ -103,12 +109,12 @@ def breakLoop():
 def region_of_interest(edges):
     height = edges.shape[0]
     #polygons1 = np.array([[(0, height), (640, height), (320, 240)]])
-    polygons1 = np.array([[(0, height), (640, height), (0, 250)]])
-    polygons2 = np.array([[(0, 250), (640, height), (640, 250)]])
+    polygons1 = np.array([[(0, height), ((320), height), (0, (125))]])
+    polygons2 = np.array([[(0, (125)), ((320), height), ((320), (125))]])
 
     mask = np.zeros_like(edges)
-    cv.fillPoly(mask, polygons1, 255)
-    cv.fillPoly(mask, polygons2, 255)
+    cv.fillPoly(mask, polygons1, (255))
+    cv.fillPoly(mask, polygons2, (255))
 
     masked_image = cv.bitwise_and(edges, mask)
     return masked_image
@@ -137,7 +143,7 @@ def midelOfRode(lineL, lineR):
     return np.array([midX, midY])
 
 
-d = {'V10T': 0, 'V0T': 0, 'V0T': 0, 'V0T': 0, 'V10T': 0, 'V10T': 0, 'error': 0}
+d = {'V10T': 0, 'V0T': 0, 'V0T': 0, 'V0T': 0, 'V7T': 0, 'V7T': 0, 'error': 0}
 
 turnError = 8
 def errorTurn(left_fit, right_fit, image):
@@ -161,11 +167,11 @@ def errorTurn(left_fit, right_fit, image):
         right = False
 
     if(left and right):
-        turnError=((midelOfRode(left_line, right_line)[0])-320)/320
+        turnError=((midelOfRode(left_line, right_line)[0])-(320/2))/(320)
     elif(not(right) and left):
-        turnError=1
+        turnError=0.6
     elif(not(left) and right):
-        turnError=-1
+        turnError=-0.6
     else:
         turnError=0
 
@@ -190,7 +196,7 @@ def checkAndPrint(left_fit, right_fit, image):
     else:
         right = False
 
-    if (left and right and (310 < midelOfRode(left_line, right_line)[0] < 330)) and (
+    if (left and right and ((310/2) < midelOfRode(left_line, right_line)[0] < (330/2))) and (
             left and right and midelOFaLine(left_line)[1] == midelOFaLine(right_line)[1]):
         msg = 'V10T' #MID
     elif left is False and right is False:
@@ -199,10 +205,10 @@ def checkAndPrint(left_fit, right_fit, image):
         msg = 'V0T' #LEFT
     elif (right is False) and left:
         msg = 'V0T' #RIGHT
-    elif midelOfRode(left_line, right_line)[0] > 330:
-        msg = 'V10T' #right + drive
-    elif 310 > midelOfRode(left_line, right_line)[0]:
-        msg = 'V10T' #left + drive
+    elif midelOfRode(left_line, right_line)[0] > (330/2):
+        msg = 'V7T' #right + drive
+    elif (310/2) > midelOfRode(left_line, right_line)[0]:
+        msg = 'V7T' #left + drive
     else:
         msg = 'error'
 
@@ -244,9 +250,8 @@ def main():
     counter = 0
     flag = True
     cap = cv.VideoCapture(0)
-    cap.set(3, 640)
-    cap.set(4, 480)
-    cap.set(5, 10)
+    cap.set(3, 320)
+    cap.set(4, 240)
 
 
 
@@ -275,8 +280,8 @@ def main():
                 d[i] = 0
             print((f'{msg}{turnError*-1}')+'_')
             #communication
-            #buff = ((f'{msg}{turnError*-1}')+'_').encode()
-            buff=('v0').encode()
+            buff = ((f'{msg}{turnError*-1}')+'_').encode()
+            #buff=('v0').encode()
             ser.write(buff)
 
         line_image = display_lines(frame, averaged_lines)

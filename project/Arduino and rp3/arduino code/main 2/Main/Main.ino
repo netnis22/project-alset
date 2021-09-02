@@ -6,7 +6,7 @@
 #define VKi 0.0  //0.001
 
 #define OKp 10
-#define OKd 0.0
+#define OKd 8
 #define OKi 0.0
 
 double OldError; 
@@ -258,6 +258,7 @@ void loop()
        double omegaCurr = (RightWheelSpeed - LeftWheelSpeed) / DISTANCE;
        double error = TurnReference*10-omegaCurr;
        double Kcorrection = OKp * error;
+       
        double Dcorrection = OKd * (error - OldTurnError);
        OldTurnError = error;
        TurnErrorSum += OKi * error;
